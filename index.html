@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f4f7f6; /* 前回と同じ背景色 */
             color: #333;
             line-height: 1.6;
             margin: 0;
@@ -48,7 +48,7 @@
             color: #34495e;
         }
         .answer-option {
-            background-color: #ecf0f1;
+            background-color: #ecf0f1; /* 前回と同じ選択肢の背景色 */
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 8px;
@@ -57,7 +57,7 @@
             border: 2px solid transparent; /* 境界線を透明で確保 */
         }
         .answer-option:hover {
-            background-color: #dfe6e9;
+            background-color: #dfe6e9; /* 前回と同じホバー色 */
             transform: translateY(-2px);
         }
         /* 選択された選択肢のスタイル */
@@ -105,7 +105,7 @@
             width: fit-content;
             margin: 20px auto 0;
             padding: 12px 25px;
-            background-color: #3498db;
+            background-color: #3498db; /* 前回と同じボタン色 */
             color: white;
             border: none;
             border-radius: 5px;
@@ -114,20 +114,32 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .button:hover {
-            background-color: #2980b9;
+            background-color: #2980b9; /* 前回と同じボタンホバー色 */
             transform: translateY(-1px);
         }
-        #quiz-score {
+        #quiz-score-area {
             text-align: center;
-            font-size: 1.5em;
             margin-top: 30px;
+            display: none; /* JavaScriptで表示を制御 */
+        }
+        #quiz-score {
+            font-size: 1.5em;
             font-weight: bold;
             color: #2c3e50;
-            display: none; /* JavaScriptで表示を制御 */
+            margin-bottom: 10px;
+        }
+        #score-message {
+            font-size: 1.2em;
+            color: #34495e;
+            margin-bottom: 15px;
+        }
+        #challenge-count {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 20px;
         }
         #restart-quiz-btn {
             background-color: #2ecc71; /* 緑色 */
-            display: none; /* JavaScriptで表示を制御 */
         }
         #restart-quiz-btn:hover {
             background-color: #27ae60;
@@ -136,7 +148,7 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>福祉用具専門相談員向け 基礎クイズ</h1>
+        <h1>デイリークイズ</h1>
 
         <div class="question-block" id="question1">
             <div class="question-text">Q1: 福祉用具専門相談員として、利用者に福祉用具を適切に提供するために最も重要な心構えは何ですか？</div>
@@ -176,8 +188,12 @@
             </div>
             <button class="button score-quiz-btn">採点する</button> </div>
 
-        <div id="quiz-score"></div>
-        <button class="button" id="restart-quiz-btn">もう一度挑戦する</button>
+        <div id="quiz-score-area">
+            <div id="quiz-score"></div>
+            <div id="score-message"></div>
+            <div id="challenge-count"></div>
+            <button class="button" id="restart-quiz-btn">もう一度挑戦する</button>
+        </div>
 
     </div>
 
@@ -186,6 +202,7 @@
         const questions = document.querySelectorAll('.question-block');
         let currentQuestionIndex = 0;
         let score = 0;
+        let challengeCounter = parseInt(localStorage.getItem('quizChallengeCount') || '0');
 
         function showQuestion(index) {
             questions.forEach((q, i) => {
@@ -209,9 +226,27 @@
             }
         }
 
+        function displayScoreMessage(finalScore) {
+            const messageElement = document.getElementById('score-message');
+            if (!messageElement) return;
+
+            if (finalScore === questions.length) { // 全問正解
+                messageElement.textContent = "めんそ～れ～♪";
+            } else if (finalScore === 2) { // 2問正解
+                messageElement.textContent = "もういっちょ♪";
+            } else if (finalScore === 1) { // 1問正解
+                messageElement.textContent = "どんまい♪";
+            } else { // 0問正解
+                messageElement.textContent = ""; // 何も表示しない
+            }
+        }
+
         function resetQuiz() {
             currentQuestionIndex = 0;
             score = 0;
+            challengeCounter++; // 挑戦回数を増やす
+            localStorage.setItem('quizChallengeCount', challengeCounter.toString()); // ローカルストレージに保存
+
             questions.forEach(q => {
                 const options = q.querySelectorAll('.answer-option');
                 options.forEach(option => {
@@ -231,16 +266,27 @@
                 const scoreBtn = q.querySelector('.score-quiz-btn');
                 if (scoreBtn) scoreBtn.style.display = 'none';
             });
+
+            const scoreArea = document.getElementById('quiz-score-area');
+            if (scoreArea) scoreArea.style.display = 'none';
             const scoreDisplay = document.getElementById('quiz-score');
-            if (scoreDisplay) scoreDisplay.style.display = 'none';
-            const restartButton = document.getElementById('restart-quiz-btn');
-            if (restartButton) restartButton.style.display = 'none';
+            if (scoreDisplay) scoreDisplay.textContent = '';
+            const scoreMessage = document.getElementById('score-message');
+            if (scoreMessage) scoreMessage.textContent = '';
+            const challengeCountDisplay = document.getElementById('challenge-count');
+            if (challengeCountDisplay) challengeCountDisplay.textContent = '';
 
             showQuestion(currentQuestionIndex);
         }
 
-        // Initialize the quiz
-        resetQuiz();
+        // Initialize challenge count display on first load
+        const initialChallengeCountDisplay = document.getElementById('challenge-count');
+        if (initialChallengeCountDisplay) {
+            initialChallengeCountDisplay.textContent = `${challengeCounter}回目の挑戦です`;
+        }
+
+        // Initialize the quiz (first question visible, others hidden)
+        showQuestion(currentQuestionIndex);
 
         questions.forEach((q, qIndex) => {
             const options = q.querySelectorAll('.answer-option');
@@ -297,16 +343,20 @@
             const scoreButton = q.querySelector('.score-quiz-btn');
             if (scoreButton) {
                 scoreButton.addEventListener('click', function() {
+                    const scoreArea = document.getElementById('quiz-score-area');
+                    if (scoreArea) scoreArea.style.display = 'block';
+
                     const scoreDisplay = document.getElementById('quiz-score');
                     if (scoreDisplay) {
                         scoreDisplay.textContent = `あなたのスコア: ${score} / ${questions.length}`;
-                        scoreDisplay.style.display = 'block';
                     }
-                    const restartButton = document.getElementById('restart-quiz-btn');
-                    if (restartButton) {
-                        restartButton.style.display = 'block';
-                        restartButton.style.marginTop = '20px'; // ボタンとスコアの間の余白を調整
+                    displayScoreMessage(score); // スコアに応じたメッセージを表示
+
+                    const challengeCountDisplay = document.getElementById('challenge-count');
+                    if (challengeCountDisplay) {
+                        challengeCountDisplay.textContent = `${challengeCounter}回目の挑戦です`;
                     }
+
                     q.style.display = 'none'; // Hide the last question after scoring
                 });
             }
