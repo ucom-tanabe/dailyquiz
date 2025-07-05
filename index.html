@@ -32,6 +32,38 @@
             margin-bottom: 30px;
             font-size: 2em;
         }
+        #title-page {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            /* border-bottom: 1px solid #eee; */ /* 必要ならコメント解除 */
+        }
+        #title-page h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-bottom: 25px;
+        }
+        #title-page p { /* めんそ～れ～♪ のスタイル */
+            font-size: 1.5em;
+            color: #28a745; /* 緑色で少し目立たせる */
+            font-weight: bold;
+            margin-top: -15px; /* h2との間隔を調整 */
+            margin-bottom: 30px;
+        }
+        #start-quiz-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #start-quiz-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
         .question-block {
             margin-bottom: 25px;
             padding-bottom: 20px;
@@ -148,7 +180,13 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>デイリークイズ</h1>
+        <h1>福祉用具専門相談員向け 基礎クイズ</h1>
+
+        <div id="title-page">
+            <h2>あなたの知識を試しましょう！</h2>
+            <p>めんそ～れ～♪</p> {/* ここに「めんそ～れ～♪」を追加 */}
+            <button class="button" id="start-quiz-btn">クイズを始める</button>
+        </div>
 
         <div class="question-block" id="question1">
             <div class="question-text">Q1: 福祉用具専門相談員として、利用者に福祉用具を適切に提供するために最も重要な心構えは何ですか？</div>
@@ -186,7 +224,8 @@
             <div class="rationale">
                 **解説:** 特定福祉用具販売には年間支給限度基準額が設定されており、この範囲内で保険給付が受けられます。介護保険の特定福祉用具販売には支給限度額が定められており、一生涯に一度という制限もありません。
             </div>
-            <button class="button score-quiz-btn">採点する</button> </div>
+            <button class="button score-quiz-btn">採点する</button> {/* 最後の問題は採点ボタン */}
+        </div>
 
         <div id="quiz-score-area">
             <div id="quiz-score"></div>
@@ -199,10 +238,18 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const titlePage = document.getElementById('title-page');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
         const questions = document.querySelectorAll('.question-block');
         let currentQuestionIndex = 0;
         let score = 0;
         let challengeCounter = parseInt(localStorage.getItem('quizChallengeCount') || '0');
+
+        // クイズ開始関数
+        function startQuiz() {
+            titlePage.style.display = 'none'; // 表紙を非表示
+            resetQuiz(false); // クイズをリセットして開始 (初回挑戦としてカウント)
+        }
 
         function showQuestion(index) {
             questions.forEach((q, i) => {
@@ -230,7 +277,7 @@
             const messageElement = document.getElementById('score-message');
             if (!messageElement) return;
 
-            if (finalScore === questions.length) { // 全問正解
+            if (finalScore === questions.length) { // 全問正解 (3問)
                 messageElement.textContent = "めんそ～れ～♪";
             } else if (finalScore === 2) { // 2問正解
                 messageElement.textContent = "もういっちょ♪";
@@ -241,11 +288,21 @@
             }
         }
 
-        function resetQuiz() {
+        // isRestartedFromButton: 「もう一度挑戦する」ボタンから呼ばれたか (挑戦回数カウント用)
+        function resetQuiz(isRestartedFromButton = true) {
             currentQuestionIndex = 0;
             score = 0;
-            challengeCounter++; // 挑戦回数を増やす
-            localStorage.setItem('quizChallengeCount', challengeCounter.toString()); // ローカルストレージに保存
+            if (isRestartedFromButton) { // 「もう一度挑戦する」ボタンから呼ばれたらカウントアップ
+                challengeCounter++;
+                localStorage.setItem('quizChallengeCount', challengeCounter.toString()); // ローカルストレージに保存
+            } else { // 「クイズを始める」ボタンからの初回開始時
+                 if (challengeCounter === 0) { // 初めての訪問なら1回目
+                    challengeCounter = 1;
+                    localStorage.setItem('quizChallengeCount', challengeCounter.toString());
+                }
+                // それ以外はchallengeCounterはそのまま (前の挑戦が終了していないなど)
+            }
+
 
             questions.forEach(q => {
                 const options = q.querySelectorAll('.answer-option');
@@ -276,17 +333,18 @@
             const challengeCountDisplay = document.getElementById('challenge-count');
             if (challengeCountDisplay) challengeCountDisplay.textContent = '';
 
-            showQuestion(currentQuestionIndex);
+            showQuestion(currentQuestionIndex); // 最初の問題を表示
         }
 
-        // Initialize challenge count display on first load
-        const initialChallengeCountDisplay = document.getElementById('challenge-count');
-        if (initialChallengeCountDisplay) {
-            initialChallengeCountDisplay.textContent = `${challengeCounter}回目の挑戦です`;
-        }
+        // 初期表示：表紙のみを表示し、クイズ問題は非表示
+        titlePage.style.display = 'block';
+        questions.forEach(q => q.style.display = 'none');
+        document.getElementById('quiz-score-area').style.display = 'none';
 
-        // Initialize the quiz (first question visible, others hidden)
-        showQuestion(currentQuestionIndex);
+        // 「クイズを始める」ボタンのイベントリスナー
+        if (startQuizBtn) {
+            startQuizBtn.addEventListener('click', startQuiz);
+        }
 
         questions.forEach((q, qIndex) => {
             const options = q.querySelectorAll('.answer-option');
@@ -364,7 +422,7 @@
 
         const restartButton = document.getElementById('restart-quiz-btn');
         if (restartButton) {
-            restartButton.addEventListener('click', resetQuiz);
+            restartButton.addEventListener('click', () => resetQuiz(true)); // ボタンからのリセットはtrueを渡す
         }
     });
     </script>
