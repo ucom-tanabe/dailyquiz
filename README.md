@@ -1,2 +1,2 @@
-# ucom-quiz
+# dailyquiz
 デイリークイズ
