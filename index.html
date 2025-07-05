@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>デイリークイズ</title> {/* タイトルを「デイリークイズ」に変更 */}
+    <title>デイリークイズ</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6; /* 前回と同じ背景色 */
+            background-color: #f4f7f6;
             color: #333;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* 上部に寄せる */
+            align-items: flex-start;
             min-height: 100vh;
         }
         .quiz-container {
@@ -36,21 +36,20 @@
             text-align: center;
             margin-bottom: 25px;
             padding-bottom: 20px;
-            /* border-bottom: 1px solid #eee; */ /* 必要ならコメント解除 */
         }
         #title-page h2 {
             font-size: 1.8em;
             color: #34495e;
             margin-bottom: 25px;
         }
-        /* 表紙のPタグは削除されたため、このスタイルは不要になりますが、念のため残しておきます */
-        #title-page p { 
+        /* 表紙のPタグは削除されたため、関連スタイルはコメントアウトまたは削除 */
+        /* #title-page p { 
             font-size: 1.5em;
             color: #28a745; 
             font-weight: bold;
             margin-top: -15px; 
             margin-bottom: 30px;
-        }
+        } */
         #start-quiz-btn {
             background-color: #3498db;
             color: white;
@@ -69,7 +68,7 @@
             margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid #eee;
-            display: none; /* JavaScriptで表示を制御 */
+            display: none;
         }
         .question-block:last-of-type {
             border-bottom: none;
@@ -81,34 +80,31 @@
             color: #34495e;
         }
         .answer-option {
-            background-color: #ecf0f1; /* 前回と同じ選択肢の背景色 */
+            background-color: #ecf0f1;
             padding: 15px;
             margin-bottom: 10px;
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease, border 0.3s ease;
-            border: 2px solid transparent; /* 境界線を透明で確保 */
+            border: 2px solid transparent;
         }
         .answer-option:hover {
-            background-color: #dfe6e9; /* 前回と同じホバー色 */
+            background-color: #dfe6e9;
             transform: translateY(-2px);
         }
-        /* 選択された選択肢のスタイル */
         .answer-option.selected {
-            border-color: #3498db; /* 選択時のボーダー色 */
-            background-color: #d8edf7; /* 薄い青 */
+            border-color: #3498db;
+            background-color: #d8edf7;
         }
-        /* 正解の選択肢のスタイル */
         .answer-option.correct {
-            background-color: #d4edda; /* 薄い緑 */
-            border-color: #28a745; /* 緑のボーダー */
+            background-color: #d4edda;
+            border-color: #28a745;
             color: #155724;
             font-weight: bold;
         }
-        /* 不正解の選択肢のスタイル */
         .answer-option.incorrect {
-            background-color: #f8d7da; /* 薄い赤 */
-            border-color: #dc3545; /* 赤のボーダー */
+            background-color: #f8d7da;
+            border-color: #dc3545;
             color: #721c24;
             font-weight: bold;
         }
@@ -116,13 +112,13 @@
             font-size: 1.5em;
             margin-left: 10px;
             font-weight: bold;
-            display: none; /* JavaScriptで表示を制御 */
+            display: none;
         }
         .correct-mark {
-            color: #28a745; /* 緑色 */
+            color: #28a745;
         }
         .incorrect-mark {
-            color: #dc3545; /* 赤色 */
+            color: #dc3545;
         }
         .rationale {
             background-color: #f9f9f9;
@@ -131,14 +127,14 @@
             margin-top: 15px;
             font-size: 0.95em;
             color: #555;
-            display: none; /* JavaScriptで表示を制御 */
+            display: none;
         }
         .button {
             display: block;
             width: fit-content;
             margin: 20px auto 0;
             padding: 12px 25px;
-            background-color: #3498db; /* 前回と同じボタン色 */
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 5px;
@@ -147,13 +143,13 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .button:hover {
-            background-color: #2980b9; /* 前回と同じボタンホバー色 */
+            background-color: #2980b9;
             transform: translateY(-1px);
         }
         #quiz-score-area {
             text-align: center;
             margin-top: 30px;
-            display: none; /* JavaScriptで表示を制御 */
+            display: none;
         }
         #quiz-score {
             font-size: 1.5em;
@@ -172,7 +168,7 @@
             margin-bottom: 20px;
         }
         #restart-quiz-btn {
-            background-color: #2ecc71; /* 緑色 */
+            background-color: #2ecc71;
         }
         #restart-quiz-btn:hover {
             background-color: #27ae60;
@@ -185,7 +181,7 @@
 
         <div id="title-page">
             <h2>あなたの知識を試しましょう！</h2>
-            {/* <p>めんそ～れ～♪</p> */} {/* 「めんそ～れ～♪」の表示をボタンに移動したため、この行はコメントアウトまたは削除 */}
+            {/* 以前の独立したPタグは削除しました */}
             <button class="button" id="start-quiz-btn">めんそ～れ～♪</button> {/* ボタンのテキストを「めんそ～れ～♪」に変更 */}
         </div>
 
@@ -225,7 +221,7 @@
             <div class="rationale">
                 **解説:** 特定福祉用具販売には年間支給限度基準額が設定されており、この範囲内で保険給付が受けられます。介護保険の特定福祉用具販売には支給限度額が定められており、一生涯に一度という制限もありません。
             </div>
-            <button class="button score-quiz-btn">採点する</button> {/* 最後の問題は採点ボタン */}
+            <button class="button score-quiz-btn">採点する</button>
         </div>
 
         <div id="quiz-score-area">
@@ -244,98 +240,84 @@
         const questions = document.querySelectorAll('.question-block');
         let currentQuestionIndex = 0;
         let score = 0;
-        // localStorageから挑戦回数を取得、初回は0とする
         let challengeCounter = parseInt(localStorage.getItem('quizChallengeCount') || '0');
 
-        // クイズ開始関数
         function startQuiz() {
-            titlePage.style.display = 'none'; // 表紙を非表示
-            resetQuiz(false); // クイズをリセットして開始 (初回挑戦としてカウント)
+            titlePage.style.display = 'none';
+            resetQuiz(false);
         }
 
-        // 指定されたインデックスの問題を表示
         function showQuestion(index) {
             questions.forEach((q, i) => {
                 q.style.display = (i === index) ? 'block' : 'none';
             });
-            // 質問表示後、ボタンの表示状態を更新
             if (index < questions.length) {
-                updateNavigationButtons(false); // 回答前なので、次の問題/採点ボタンは非表示
+                updateNavigationButtons(false);
             }
         }
 
-        // ナビゲーションボタン (次の問題へ/採点する) の表示を更新
         function updateNavigationButtons(answerGiven) {
             const currentQuestionBlock = questions[currentQuestionIndex];
             const nextButton = currentQuestionBlock.querySelector('.next-question-btn');
             const scoreButton = currentQuestionBlock.querySelector('.score-quiz-btn');
 
-            // 回答後で、かつ最後の問題でなければ「次の問題へ」を表示
             if (nextButton) {
                 nextButton.style.display = answerGiven && currentQuestionIndex < questions.length - 1 ? 'block' : 'none';
             }
-            // 回答後で、かつ最後の問題であれば「採点する」を表示
             if (scoreButton) {
                 scoreButton.style.display = answerGiven && currentQuestionIndex === questions.length - 1 ? 'block' : 'none';
             }
         }
 
-        // スコアに応じたメッセージを表示
         function displayScoreMessage(finalScore) {
             const messageElement = document.getElementById('score-message');
             if (!messageElement) return;
 
-            if (finalScore === questions.length) { // 全問正解 (3問)
+            if (finalScore === questions.length) {
                 messageElement.textContent = "めんそ～れ～♪";
-            } else if (finalScore === 2) { // 2問正解
+            } else if (finalScore === 2) {
                 messageElement.textContent = "もういっちょ♪";
-            } else if (finalScore === 1) { // 1問正解
+            } else if (finalScore === 1) {
                 messageElement.textContent = "どんまい♪";
-            } else { // 0問正解
-                messageElement.textContent = ""; // 何も表示しない
+            } else {
+                messageElement.textContent = "";
             }
         }
 
-        // クイズの状態をリセット
-        // isRestartedFromButton: 「もう一度挑戦する」ボタンから呼ばれたか (挑戦回数カウント用)
         function resetQuiz(isRestartedFromButton = true) {
             currentQuestionIndex = 0;
             score = 0;
 
-            // 挑戦回数の更新
-            if (isRestartedFromButton) { // 「もう一度挑戦する」ボタンからのリセット時
+            if (isRestartedFromButton) {
                 challengeCounter++;
                 localStorage.setItem('quizChallengeCount', challengeCounter.toString());
-            } else { // 「クイズを始める」ボタンからの開始時 (または初回ロード時)
-                 if (challengeCounter === 0) { // 初めてのアクセスなら1回目として設定
+            } else {
+                 if (challengeCounter === 0) {
                     challengeCounter = 1;
                     localStorage.setItem('quizChallengeCount', challengeCounter.toString());
                 }
-                // それ以外 (例: 前回終了せずにページを閉じた場合) は、既存のカウントを維持
             }
 
-            // 各問題の状態をリセット
             questions.forEach(q => {
                 const options = q.querySelectorAll('.answer-option');
                 options.forEach(option => {
                     option.classList.remove('selected', 'correct', 'incorrect');
-                    option.style.pointerEvents = 'auto'; // クリック可能に戻す
+                    option.style.pointerEvents = 'auto';
                 });
                 const rationale = q.querySelector('.rationale');
-                if (rationale) rationale.style.display = 'none'; // 解説を非表示
+                if (rationale) rationale.style.display = 'none';
 
                 const correctMark = q.querySelector('.correct-mark');
                 const incorrectMark = q.querySelector('.incorrect-mark');
-                if (correctMark) correctMark.style.display = 'none'; // 正誤マークを非表示
+                if (correctMark) correctMark.style.display = 'none';
                 if (incorrectMark) incorrectMark.style.display = 'none';
 
                 const nextBtn = q.querySelector('.next-question-btn');
-                if (nextBtn) nextBtn.style.display = 'none'; // 次のボタンを非表示
+                if (nextBtn) nextBtn.style.display = 'none';
                 const scoreBtn = q.querySelector('.score-quiz-btn');
-                if (scoreBtn) scoreBtn.style.display = 'none'; // 採点ボタンを非表示
+                if (scoreBtn) scoreBtn.style.display = 'none';
             });
 
-            // スコア表示エリアをリセット
             const scoreArea = document.getElementById('quiz-score-area');
             if (scoreArea) scoreArea.style.display = 'none';
             const scoreDisplay = document.getElementById('quiz-score');
@@ -343,54 +325,46 @@
             const scoreMessage = document.getElementById('score-message');
             if (scoreMessage) scoreMessage.textContent = '';
             const challengeCountDisplay = document.getElementById('challenge-count');
-            if (challengeCountDisplay) challengeCountDisplay.textContent = ''; // 挑戦回数表示もクリア
+            if (challengeCountDisplay) challengeCountDisplay.textContent = '';
 
-            showQuestion(currentQuestionIndex); // 最初の問題を表示
+            showQuestion(currentQuestionIndex);
         }
 
-        // ページ読み込み時の初期表示設定
-        // まず表紙のみを表示し、クイズ問題と結果エリアは非表示にする
         titlePage.style.display = 'block';
         questions.forEach(q => q.style.display = 'none');
         document.getElementById('quiz-score-area').style.display = 'none';
 
-        // 「クイズを始める」ボタンのイベントリスナー
         if (startQuizBtn) {
             startQuizBtn.addEventListener('click', startQuiz);
         }
 
-        // 各問題ブロックごとの処理
         questions.forEach((q, qIndex) => {
             const options = q.querySelectorAll('.answer-option');
             const rationale = q.querySelector('.rationale');
             const correctMark = q.querySelector('.correct-mark');
             const incorrectMark = q.querySelector('.incorrect-mark');
 
-            // 各選択肢のクリックイベント
             options.forEach(option => {
                 option.addEventListener('click', function() {
-                    // 既に回答済みの場合は何もしない (再選択不可)
                     if (options[0].style.pointerEvents === 'none') {
                         return;
                     }
 
-                    // この問題の全ての選択肢を無効化 (再選択不可にする)
                     options.forEach(opt => {
                         opt.style.pointerEvents = 'none';
                     });
 
-                    this.classList.add('selected'); // 選択された選択肢をハイライト
+                    this.classList.add('selected');
 
                     const isCorrect = this.dataset.correct === 'true';
 
                     if (isCorrect) {
-                        this.classList.add('correct'); // 正解スタイルを適用
-                        if (correctMark) correctMark.style.display = 'inline'; // 〇マークを表示
-                        score++; // スコア加算
+                        this.classList.add('correct');
+                        if (correctMark) correctMark.style.display = 'inline';
+                        score++;
                     } else {
-                        this.classList.add('incorrect'); // 不正解スタイルを適用
-                        if (incorrectMark) incorrectMark.style.display = 'inline'; // ✕マークを表示
-                        // 不正解の場合、正しい選択肢もハイライト
+                        this.classList.add('incorrect');
+                        if (incorrectMark) incorrectMark.style.display = 'inline';
                         options.forEach(opt => {
                             if (opt.dataset.correct === 'true') {
                                 opt.classList.add('correct');
@@ -398,50 +372,46 @@
                         });
                     }
 
-                    if (rationale) rationale.style.display = 'block'; // 解説を表示
-                    updateNavigationButtons(true); // 回答後のボタン表示を更新
+                    if (rationale) rationale.style.display = 'block';
+                    updateNavigationButtons(true);
                 });
             });
 
-            // 「次の問題へ」ボタンのイベント
             const nextButton = q.querySelector('.next-question-btn');
             if (nextButton) {
                 nextButton.addEventListener('click', function() {
-                    currentQuestionIndex++; // 次の問題へ
+                    currentQuestionIndex++;
                     if (currentQuestionIndex < questions.length) {
-                        showQuestion(currentQuestionIndex); // 次の問題を表示
+                        showQuestion(currentQuestionIndex);
                     }
                 });
             }
 
-            // 「採点する」ボタンのイベント (最終問題のみ)
             const scoreButton = q.querySelector('.score-quiz-btn');
             if (scoreButton) {
                 scoreButton.addEventListener('click', function() {
                     const scoreArea = document.getElementById('quiz-score-area');
-                    if (scoreArea) scoreArea.style.display = 'block'; // スコアエリアを表示
+                    if (scoreArea) scoreArea.style.display = 'block';
 
                     const scoreDisplay = document.getElementById('quiz-score');
                     if (scoreDisplay) {
                         scoreDisplay.textContent = `あなたのスコア: ${score} / ${questions.length}`;
                     }
-                    displayScoreMessage(score); // スコアに応じたメッセージを表示
+                    displayScoreMessage(score);
 
                     const challengeCountDisplay = document.getElementById('challenge-count');
                     if (challengeCountDisplay) {
-                        // 初回起動時の挑戦回数と一致するように調整
                         challengeCountDisplay.textContent = `${challengeCounter}回目の挑戦です`;
                     }
 
-                    q.style.display = 'none'; // 最後の問題ブロックを非表示
+                    q.style.display = 'none';
                 });
             }
         });
 
-        // 「もう一度挑戦する」ボタンのイベント
         const restartButton = document.getElementById('restart-quiz-btn');
         if (restartButton) {
-            restartButton.addEventListener('click', () => resetQuiz(true)); // ボタンからのリセットはtrueを渡す
+            restartButton.addEventListener('click', () => resetQuiz(true));
         }
     });
     </script>
