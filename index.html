@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>デイリークイズ</title>
+    <title>デイリークイズ</title> {/* タイトルを「デイリークイズ」に変更 */}
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -43,11 +43,12 @@
             color: #34495e;
             margin-bottom: 25px;
         }
-        #title-page p { /* めんそ～れ～♪ のスタイル */
+        /* 表紙のPタグは削除されたため、このスタイルは不要になりますが、念のため残しておきます */
+        #title-page p { 
             font-size: 1.5em;
-            color: #28a745; /* 緑色で少し目立たせる */
+            color: #28a745; 
             font-weight: bold;
-            margin-top: -15px; /* h2との間隔を調整 */
+            margin-top: -15px; 
             margin-bottom: 30px;
         }
         #start-quiz-btn {
@@ -184,8 +185,8 @@
 
         <div id="title-page">
             <h2>あなたの知識を試しましょう！</h2>
-            <p>めんそ～れ～♪</p>
-            <button class="button" id="start-quiz-btn">クイズを始める</button>
+            {/* <p>めんそ～れ～♪</p> */} {/* 「めんそ～れ～♪」の表示をボタンに移動したため、この行はコメントアウトまたは削除 */}
+            <button class="button" id="start-quiz-btn">めんそ～れ～♪</button> {/* ボタンのテキストを「めんそ～れ～♪」に変更 */}
         </div>
 
         <div class="question-block" id="question1">
@@ -224,7 +225,8 @@
             <div class="rationale">
                 **解説:** 特定福祉用具販売には年間支給限度基準額が設定されており、この範囲内で保険給付が受けられます。介護保険の特定福祉用具販売には支給限度額が定められており、一生涯に一度という制限もありません。
             </div>
-            <button class="button score-quiz-btn">採点する</button> </div>
+            <button class="button score-quiz-btn">採点する</button> {/* 最後の問題は採点ボタン */}
+        </div>
 
         <div id="quiz-score-area">
             <div id="quiz-score"></div>
